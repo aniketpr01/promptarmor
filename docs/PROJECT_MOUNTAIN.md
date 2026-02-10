@@ -387,6 +387,28 @@ promptarmor/
 - Set up documentation framework
 - Beginning implementation...
 
+### 2026-02-11 - v0.1.0 Complete
+
+**Phase 1 Complete:**
+- ✅ Core scanner engine with pattern matching
+- ✅ 25 base detection rules
+- ✅ CLI with scan/check/rules commands
+- ✅ JSON output support
+- ✅ 29 passing tests
+
+**Phase 2 Complete:**
+- ✅ 30+ advanced rules added (50+ total)
+- ✅ Categories: multi-turn, agent-exploit, multi-modal, logic-exploit, etc.
+- ✅ GitHub Actions CI/CD workflow
+- ✅ Reusable GitHub Action for scanning
+- ✅ VS Code extension (real-time scanning)
+
+**Pushed to GitHub:** https://github.com/aniketpr01/promptarmor
+
+**Pending:**
+- npm publish (requires `npm login`)
+- VS Code marketplace publish (requires publisher account)
+
 ---
 
 *This document is continuously updated as the project evolves.*
