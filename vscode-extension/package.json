@@ -1,0 +1,107 @@
+{
+  "name": "promptarmor-vscode",
+  "displayName": "PromptArmor",
+  "description": "Real-time prompt injection detection for LLM applications",
+  "version": "0.1.0",
+  "publisher": "aniketpr01",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aniketpr01/promptarmor.git"
+  },
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "keywords": [
+    "llm",
+    "security",
+    "prompt-injection",
+    "ai",
+    "linter"
+  ],
+  "activationEvents": [
+    "onLanguage:plaintext",
+    "onLanguage:markdown",
+    "onLanguage:json",
+    "onLanguage:yaml",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:python"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "promptarmor.scanFile",
+        "title": "PromptArmor: Scan Current File"
+      },
+      {
+        "command": "promptarmor.scanSelection",
+        "title": "PromptArmor: Scan Selection"
+      },
+      {
+        "command": "promptarmor.scanWorkspace",
+        "title": "PromptArmor: Scan Workspace"
+      }
+    ],
+    "configuration": {
+      "title": "PromptArmor",
+      "properties": {
+        "promptarmor.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable PromptArmor"
+        },
+        "promptarmor.severity": {
+          "type": "string",
+          "default": "low",
+          "enum": ["critical", "high", "medium", "low", "info"],
+          "description": "Minimum severity to report"
+        },
+        "promptarmor.scanOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Scan files on save"
+        },
+        "promptarmor.scanOnType": {
+          "type": "boolean",
+          "default": true,
+          "description": "Scan as you type (real-time)"
+        },
+        "promptarmor.filePatterns": {
+          "type": "array",
+          "default": ["**/*.txt", "**/*.md", "**/*.prompt", "**/*.json", "**/*.yaml", "**/*.yml"],
+          "description": "File patterns to scan"
+        }
+      }
+    },
+    "menus": {
+      "editor/context": [
+        {
+          "command": "promptarmor.scanSelection",
+          "group": "promptarmor",
+          "when": "editorHasSelection"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3",
+    "@vscode/vsce": "^2.22.0"
+  },
+  "dependencies": {
+    "promptarmor": "^0.1.0"
+  }
+}

@@ -1,0 +1,61 @@
+name: 'PromptArmor Scan'
+description: 'Scan prompts for injection vulnerabilities'
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: 'Path or glob pattern to scan'
+        required: false
+        default: '.'
+        type: string
+      severity:
+        description: 'Minimum severity to report (critical|high|medium|low|info)'
+        required: false
+        default: 'low'
+        type: string
+      threshold:
+        description: 'Vulnerability score threshold (0-100)'
+        required: false
+        default: '50'
+        type: string
+      fail-on-vulnerabilities:
+        description: 'Fail the workflow if vulnerabilities are found'
+        required: false
+        default: 'true'
+        type: string
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Run PromptArmor Scan
+        id: scan
+        run: |
+          npx promptarmor@latest scan ${{ inputs.path }} \
+            --severity ${{ inputs.severity }} \
+            --threshold ${{ inputs.threshold }} \
+            --json > promptarmor-results.json || echo "scan_failed=true" >> $GITHUB_OUTPUT
+          
+      - name: Display Results
+        run: |
+          echo "## 🛡️ PromptArmor Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat promptarmor-results.json | jq -r '.[] | "### \(.file // "stdin")\n- Vulnerabilities: \(.summary.total)\n- Score: \(.score)/100\n- Status: \(if .passed then "✅ Passed" else "❌ Failed" end)\n"' >> $GITHUB_STEP_SUMMARY
+          
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: promptarmor-results
+          path: promptarmor-results.json
+          
+      - name: Check for failures
+        if: inputs.fail-on-vulnerabilities == 'true' && steps.scan.outputs.scan_failed == 'true'
+        run: exit 1

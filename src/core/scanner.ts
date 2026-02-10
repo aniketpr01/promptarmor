@@ -5,6 +5,10 @@
  */
 
 import { injectionRules, type DetectionRule, type Severity } from '../rules/injection-patterns.js';
+import { advancedRules } from '../rules/advanced-patterns.js';
+
+// Combine all built-in rules
+const allBuiltInRules = [...injectionRules, ...advancedRules];
 
 export interface ScanMatch {
   ruleId: string;
@@ -100,7 +104,7 @@ export class PromptScanner {
     };
 
     // Build rule set
-    let rules = [...injectionRules];
+    let rules = [...allBuiltInRules];
 
     // Add custom rules
     if (options.customRules) {
