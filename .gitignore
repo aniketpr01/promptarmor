@@ -22,8 +22,7 @@ npm-debug.log*
 coverage/
 
 # Environment
-.env
-.env.local
 
 # Misc
 *.tgz
+config.bat

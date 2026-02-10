@@ -8,7 +8,6 @@
     "type": "git",
     "url": "https://github.com/aniketpr01/promptarmor.git"
   },
-  "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
